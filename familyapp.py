@@ -1,28 +1,32 @@
 import getpass
 import time
 
-member_balance = 0  
+members = {} # dictionary to store member information
 
 def member():
-    global member_balance  
     print("Thanks for signing up!")
-    member_balance = float(input("Please enter your balance: "))  
+    username = input("Please enter your username: ")
+    balance = float(input("Please enter your balance: "))
+    members[username] = balance
     start()
 
 def admin():
-    global member_balance  
     print("Thanks for signing up!")
     time.sleep(1)
-    print("Enter 'View' to View the memebers' balance")
+    print("Enter 'View' to view the members' balance")
     print("Enter 'Exit' to Exit")
     view_or_not = input("Would you like to view your member's balance? ")
 
     while view_or_not != 'View' and view_or_not != 'Exit':
         print("Invalid choice!")
-    if view_or_not == '1':
-        print("Member balance:", member_balance)  
+        view_or_not = input("Would you like to view your member's balance? ")
+
+    if view_or_not == 'View':
+        print("Member balance:")
+        for username, balance in members.items():
+            print(username, balance)
     else:
-        exit
+        exit()
 
 def admin_code():
     admin_main_password ="AdminsAreCool"
@@ -45,6 +49,7 @@ def admin_signup():
 def member_signup():
     username = input("Enter a member username: ")
     password = getpass.getpass("Enter a member password: ")
+    members[username] = 0 # initialize member balance to 0
     with open("members.txt", "a") as f:
         f.write(f"{username},{password}\n")
     print("Member created successfully!")
@@ -76,7 +81,6 @@ def member_login():
     return False
 
 def start():
-    global member_balance  
     while True:
         print("1. Admin Signup")
         print("2. Member Signup")
@@ -101,4 +105,5 @@ def start():
             break
         else:
             print("Invalid choice, please try again.")
+
 start()
